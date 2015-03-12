@@ -1,4 +1,4 @@
-/*! markdown-it-deflist 0.1.0 https://github.com//markdown-it/markdown-it-deflist @license MIT */!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.markdownitDeflist=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*! markdown-it-deflist 1.0.0 https://github.com//markdown-it/markdown-it-deflist @license MIT */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.markdownitDeflist = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 // Process definition lists
 //
 'use strict';
@@ -34,8 +34,8 @@ function markTightParagraphs(state, idx) {
 
   for (i = idx + 2, l = state.tokens.length - 2; i < l; i++) {
     if (state.tokens[i].level === level && state.tokens[i].type === 'paragraph_open') {
-      state.tokens[i + 2].tight = true;
-      state.tokens[i].tight = true;
+      state.tokens[i + 2].hidden = true;
+      state.tokens[i].hidden = true;
       i += 2;
     }
   }
@@ -55,7 +55,8 @@ function deflist(state, startLine, endLine, silent) {
       oldTShift,
       oldTight,
       prevEmptyEnd,
-      tight;
+      tight,
+      token;
 
   if (silent) {
     // quirk: validation mode validates a dd block only, not a whole deflist
@@ -75,11 +76,8 @@ function deflist(state, startLine, endLine, silent) {
   // Start list
   listTokIdx = state.tokens.length;
 
-  state.tokens.push({
-    type: 'dl_open',
-    lines: listLines = [ startLine, 0 ],
-    level: state.level++
-  });
+  token     = state.push('dl_open', 'dl', 1);
+  token.map = listLines = [ startLine, 0 ];
 
   //
   // Iterate list items
@@ -100,29 +98,19 @@ function deflist(state, startLine, endLine, silent) {
     tight = true;
     prevEmptyEnd = false;
 
-    state.tokens.push({
-      type: 'dt_open',
-      lines: [ dtLine, dtLine ],
-      level: state.level++
-    });
-    state.tokens.push({
-      type: 'inline',
-      content: state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim(),
-      level: state.level + 1,
-      lines: [ dtLine, dtLine ],
-      children: []
-    });
-    state.tokens.push({
-      type: 'dt_close',
-      level: --state.level
-    });
+    token          = state.push('dt_open', 'dt', 1);
+    token.map      = [ dtLine, dtLine ];
+
+    token          = state.push('inline', '', 0);
+    token.map      = [ dtLine, dtLine ];
+    token.content  = state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim();
+    token.children = [];
+
+    token          = state.push('dt_close', 'dt', -1);
 
     for (;;) {
-      state.tokens.push({
-        type: 'dd_open',
-        lines: itemLines = [ nextLine, 0 ],
-        level: state.level++
-      });
+      token     = state.push('dd_open', 'dd', 1);
+      token.map = itemLines = [ nextLine, 0 ];
 
       oldTight = state.tight;
       oldDDIndent = state.ddIndent;
@@ -150,10 +138,7 @@ function deflist(state, startLine, endLine, silent) {
       state.blkIndent = oldIndent;
       state.ddIndent = oldDDIndent;
 
-      state.tokens.push({
-        type: 'dd_close',
-        level: --state.level
-      });
+      token = state.push('dd_close', 'dd', -1);
 
       itemLines[1] = nextLine = state.line;
 
@@ -189,10 +174,8 @@ function deflist(state, startLine, endLine, silent) {
   }
 
   // Finilize list
-  state.tokens.push({
-    type: 'dl_close',
-    level: --state.level
-  });
+  token = state.push('dl_close', 'dl', -1);
+
   listLines[1] = nextLine;
 
   state.line = nextLine;
@@ -207,13 +190,6 @@ function deflist(state, startLine, endLine, silent) {
 
 
 module.exports = function sub_plugin(md) {
-  md.renderer.rules.dl_open  = function dl_open() { return '<dl>\n'; };
-  md.renderer.rules.dt_open  = function dt_open() { return '<dt>'; };
-  md.renderer.rules.dd_open  = function dd_open() { return '<dd>'; };
-  md.renderer.rules.dl_close = function dl_close() { return '</dl>\n'; };
-  md.renderer.rules.dt_close = function dt_close() { return '</dt>\n'; };
-  md.renderer.rules.dd_close = function dd_close() { return '</dd>\n'; };
-
   md.block.ruler.before('paragraph', 'deflist', deflist, { alt: [ 'paragraph', 'reference' ] });
 };
 
