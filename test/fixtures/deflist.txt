@@ -140,3 +140,18 @@ test
 <dd>foo</dd>
 </dl>
 .
+
+
+Regression test, tabs
+.
+Term 1
+  :		code block
+.
+<dl>
+<dt>Term 1</dt>
+<dd>
+<pre><code>code block
+</code></pre>
+</dd>
+</dl>
+.
