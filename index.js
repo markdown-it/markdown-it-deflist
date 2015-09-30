@@ -3,7 +3,7 @@
 'use strict';
 
 
-module.exports = function sub_plugin(md) {
+module.exports = function deflist_plugin(md) {
   var isSpace = md.utils.isSpace;
 
   // Search `[:~][\n ]`, returns next pos after marker on success
