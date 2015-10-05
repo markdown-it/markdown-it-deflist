@@ -6,7 +6,7 @@
 
 > Definition list (`<dl>`) tag plugin for [markdown-it](https://github.com/markdown-it/markdown-it) markdown parser.
 
-__v1.+ requires `markdown-it` v4.+, see changelog.__
+__v2.+ requires `markdown-it` v5.+, see changelog.__
 
 Syntax is based on [pandoc definition lists](http://johnmacfarlane.net/pandoc/README.html#definition-lists).
 
