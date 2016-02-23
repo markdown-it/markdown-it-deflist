@@ -82,6 +82,7 @@ module.exports = function deflist_plugin(md) {
 
     // Start list
     listTokIdx = state.tokens.length;
+    tight = true;
 
     token     = state.push('dl_open', 'dl', 1);
     token.map = listLines = [ startLine, 0 ];
@@ -102,7 +103,6 @@ module.exports = function deflist_plugin(md) {
     /*eslint no-labels:0,block-scoped-var:0*/
     OUTER:
     for (;;) {
-      tight = true;
       prevEmptyEnd = false;
 
       token          = state.push('dt_open', 'dt', 1);
