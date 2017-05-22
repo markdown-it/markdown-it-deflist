@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-deflist",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "<dl> tag for markdown-it markdown parser.",
   "keywords": [
     "markdown-it-plugin",
@@ -31,7 +31,6 @@
     "markdown-it": "markdown-it/markdown-it",
     "markdown-it-testgen": "~0.1.0",
     "mocha": "*",
-    "request": "*",
-    "uglify-js": "*"
+    "uglify-js": "^2.7.3"
   }
 }
