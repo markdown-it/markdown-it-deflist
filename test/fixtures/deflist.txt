@@ -208,3 +208,40 @@ Term 1
 </dd>
 </dl>
 .
+
+
+Regression test (blockquote inside deflist)
+.
+foo
+: > bar
+: baz
+.
+<dl>
+<dt>foo</dt>
+<dd>
+<blockquote>
+<p>bar</p>
+</blockquote>
+</dd>
+<dd>baz</dd>
+</dl>
+.
+
+
+Coverage, 1 blank line
+.
+test
+
+.
+<p>test</p>
+.
+
+
+Coverage, 2 blank lines
+.
+test
+
+
+.
+<p>test</p>
+.

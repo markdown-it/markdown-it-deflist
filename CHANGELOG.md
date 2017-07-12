@@ -1,8 +1,13 @@
+2.0.3 / 2017-07-12
+------------------
+
+- Fix freezing on blockquotes inside definitions, #5.
+
+
 2.0.2 / 2017-05-22
 ------------------
 
 - Missed browser files rebuild in prev release.
-
 
 
 2.0.1 / 2016-02-23

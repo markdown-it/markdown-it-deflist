@@ -72,8 +72,11 @@ module.exports = function deflist_plugin(md) {
     }
 
     nextLine = startLine + 1;
+    if (nextLine >= endLine) { return false; }
+
     if (state.isEmpty(nextLine)) {
-      if (++nextLine > endLine) { return false; }
+      nextLine++;
+      if (nextLine >= endLine) { return false; }
     }
 
     if (state.sCount[nextLine] < state.blkIndent) { return false; }
