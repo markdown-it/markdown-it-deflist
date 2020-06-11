@@ -2,8 +2,21 @@
 //
 'use strict';
 
+var slugifyRE = /[\s\][!"#$%&'()*+,./:;<=>?@\\^_{|}~\-]/g;
 
-module.exports = function deflist_plugin(md) {
+module.exports = function deflist_plugin(md, opts) {
+  opts = opts || {};
+  // Whether to add ids to definitions for linking
+  var createAnchors = opts.createAnchors === true;
+  // Prefix to use when creating ids
+  var slugPrefix = opts.slugPrefix || 'markdown-def-';
+  // Custom function to create id
+  var slugify = opts.slugify || function (s) {
+    return encodeURIComponent(
+      slugPrefix + String(s).trim().toLowerCase().replace(slugifyRE, '-')
+    );
+  };
+
   var isSpace = md.utils.isSpace;
 
   // Search `[:~][\n ]`, returns next pos after marker on success
@@ -63,7 +76,8 @@ module.exports = function deflist_plugin(md) {
         pos,
         prevEmptyEnd,
         tight,
-        token;
+        token,
+        dtToken;
 
     if (silent) {
       // quirk: validation mode validates a dd block only, not a whole deflist
@@ -110,10 +124,14 @@ module.exports = function deflist_plugin(md) {
 
       token          = state.push('dt_open', 'dt', 1);
       token.map      = [ dtLine, dtLine ];
+      dtToken        = token;
 
       token          = state.push('inline', '', 0);
       token.map      = [ dtLine, dtLine ];
       token.content  = state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim();
+      if (createAnchors) {
+        dtToken.attrPush([ 'id', slugify(token.content) ]);
+      }
       token.children = [];
 
       token          = state.push('dt_close', 'dt', -1);

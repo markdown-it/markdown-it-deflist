@@ -24,10 +24,18 @@ bower install markdown-it-deflist --save
 
 ```js
 var md = require('markdown-it')()
-            .use(require('markdown-it-deflist'));
+            .use(require('markdown-it-deflist'), options);
 
 md.render(/*...*/);
 ```
+
+The options object can contain:
+
+Name            | Description                                     | Default
+----------------|-------------------------------------------------|--------
+`createAnchors` | Whether to add `id`s to definitions for linking | `true`
+`slugPrefix`    | Prefix to use when creating ids                 | `markdown-def-`
+`slugify`       | Custom function to create id                    | See [`index.js`](index.js)
 
 _Differences in browser._ If you load script directly into the page, without
 package system, module will add itself globally as `window.markdownitDeflist`.
