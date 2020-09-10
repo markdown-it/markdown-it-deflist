@@ -11,7 +11,7 @@
   "repository": "markdown-it/markdown-it-deflist.git",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint . --reset",
+    "lint": "eslint .",
     "test": "npm run lint && nyc mocha",
     "coverage": "npm run test && nyc report --reporter=html",
     "report-coveralls": "nyc report --reporter=text-lcov | coveralls"
@@ -24,7 +24,7 @@
   "devDependencies": {
     "browserify": "^16.5.2",
     "coveralls": "^3.1.0",
-    "eslint": "0.10.2",
+    "eslint": "^7.8.1",
     "lodash": "^4.17.20",
     "markdown-it": "markdown-it/markdown-it",
     "markdown-it-testgen": "~0.1.0",
