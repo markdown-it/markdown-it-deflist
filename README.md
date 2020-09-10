@@ -6,18 +6,13 @@
 
 > Definition list (`<dl>`) tag plugin for [markdown-it](https://github.com/markdown-it/markdown-it) markdown parser.
 
-__v2.+ requires `markdown-it` v5.+, see changelog.__
-
 Syntax is based on [pandoc definition lists](http://johnmacfarlane.net/pandoc/README.html#definition-lists).
 
 
 ## Install
 
-node.js, browser:
-
 ```bash
 npm install markdown-it-deflist --save
-bower install markdown-it-deflist --save
 ```
 
 ## Use
@@ -31,8 +26,3 @@ md.render(/*...*/);
 
 _Differences in browser._ If you load script directly into the page, without
 package system, module will add itself globally as `window.markdownitDeflist`.
-
-
-## License
-
-[MIT](https://github.com/markdown-it/markdown-it-deflist/blob/master/LICENSE)
