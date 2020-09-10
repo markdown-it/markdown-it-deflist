@@ -224,5 +224,5 @@ module.exports = function deflist_plugin(md) {
   }
 
 
-  md.block.ruler.before('paragraph', 'deflist', deflist, { alt: [ 'paragraph', 'reference' ] });
+  md.block.ruler.before('paragraph', 'deflist', deflist, { alt: [ 'paragraph', 'reference', 'blockquote' ] });
 };
