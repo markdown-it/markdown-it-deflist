@@ -89,6 +89,7 @@ module.exports = function deflist_plugin(md) {
 
     token     = state.push('dl_open', 'dl', 1);
     token.map = listLines = [ startLine, 0 ];
+    token.position = state.bMarks[startLine];
 
     //
     // Iterate list items
@@ -110,6 +111,7 @@ module.exports = function deflist_plugin(md) {
 
       token          = state.push('dt_open', 'dt', 1);
       token.map      = [ dtLine, dtLine ];
+      token.position = state.bMarks[dtLine];
 
       token          = state.push('inline', '', 0);
       token.map      = [ dtLine, dtLine ];
@@ -121,6 +123,7 @@ module.exports = function deflist_plugin(md) {
       for (;;) {
         token     = state.push('dd_open', 'dd', 1);
         token.map = itemLines = [ nextLine, 0 ];
+        token.position = contentStart;
 
         pos = contentStart;
         max = state.eMarks[ddLine];
