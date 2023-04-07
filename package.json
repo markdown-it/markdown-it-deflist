@@ -1,5 +1,5 @@
 {
-  "name": "markdown-it-deflist",
+  "name": "@hackmd/markdown-it-deflist",
   "version": "2.2.0",
   "description": "<dl> tag for markdown-it markdown parser.",
   "keywords": [
