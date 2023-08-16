@@ -89,7 +89,7 @@ module.exports = function deflist_plugin(md) {
 
     token     = state.push('dl_open', 'dl', 1);
     token.map = listLines = [ startLine, 0 ];
-    token.position = state.bMarks[startLine];
+    token.position = pos;
 
     //
     // Iterate list items
@@ -113,10 +113,13 @@ module.exports = function deflist_plugin(md) {
       token.map      = [ dtLine, dtLine ];
       token.position = state.bMarks[dtLine];
 
+      var originalContent = state.src.slice(pos, max);
       token          = state.push('inline', '', 0);
       token.map      = [ dtLine, dtLine ];
       token.content  = state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim();
       token.children = [];
+      token.position = pos + trimLeftOffset(originalContent);
+      token.size = max - pos;
 
       token          = state.push('dt_close', 'dt', -1);
 
@@ -229,3 +232,7 @@ module.exports = function deflist_plugin(md) {
 
   md.block.ruler.before('paragraph', 'deflist', deflist, { alt: [ 'paragraph', 'reference', 'blockquote' ] });
 };
+
+function trimLeftOffset(str) {
+  return str.length - str.trimLeft().length;
+}
