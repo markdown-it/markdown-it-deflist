@@ -1,6 +1,6 @@
 # markdown-it-deflist
 
-[![Build Status](https://img.shields.io/travis/markdown-it/markdown-it-deflist/master.svg?style=flat)](https://travis-ci.org/markdown-it/markdown-it-deflist)
+[![CI](https://github.com/markdown-it/markdown-it-deflist/actions/workflows/ci.yml/badge.svg)](https://github.com/markdown-it/markdown-it-deflist/actions/workflows/ci.yml)
 [![NPM version](https://img.shields.io/npm/v/markdown-it-deflist.svg?style=flat)](https://www.npmjs.org/package/markdown-it-deflist)
 [![Coverage Status](https://img.shields.io/coveralls/markdown-it/markdown-it-deflist/master.svg?style=flat)](https://coveralls.io/r/markdown-it/markdown-it-deflist?branch=master)
 
