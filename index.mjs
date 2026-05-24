@@ -42,7 +42,8 @@ export default function deflist_plugin (md) {
     if (silent) {
       // quirk: validation mode validates a dd block only, not a whole deflist
       if (state.ddIndent < 0) { return false }
-      return skipMarker(state, startLine) >= 0
+      const markerPos = skipMarker(state, startLine)
+      return markerPos >= 0 && state.sCount[startLine] < state.blkIndent
     }
 
     let nextLine = startLine + 1

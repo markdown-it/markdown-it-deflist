@@ -245,3 +245,60 @@ test
 .
 <p>test</p>
 .
+
+
+A lazy continuation may start with a `:`, if it has enough indent.
+.
+apple
+   : > computer company
+     : red fruit
+
+orange
+   : > telecom company
+   : orange fruit
+
+chili's
+   : > restaurant company
+ : spicy fruit
+.
+<dl>
+<dt>apple</dt>
+<dd>
+<blockquote>
+<p>computer company
+: red fruit</p>
+</blockquote>
+</dd>
+<dt>orange</dt>
+<dd>
+<blockquote>
+<p>telecom company</p>
+</blockquote>
+</dd>
+<dd>orange fruit</dd>
+<dt>chili's</dt>
+<dd>
+<blockquote>
+<p>restaurant company</p>
+</blockquote>
+</dd>
+<dd>spicy fruit</dd>
+</dl>
+.
+
+It may not, however, lazily act as a definition in a list.
+.
+> cherry
+> : keyboard company
+> pomegranate
+: tart fruit
+.
+<blockquote>
+<dl>
+<dt>cherry</dt>
+<dd>keyboard company
+pomegranate
+: tart fruit</dd>
+</dl>
+</blockquote>
+.
