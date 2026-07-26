@@ -134,6 +134,50 @@ Term 2
 .
 
 
+Blank line after the first term makes the list loose:
+.
+Term 1
+
+: foo
+
+Term 2
+: bar
+.
+<dl>
+<dt>Term 1</dt>
+<dd>
+<p>foo</p>
+</dd>
+<dt>Term 2</dt>
+<dd>
+<p>bar</p>
+</dd>
+</dl>
+.
+
+
+Blank line after a later term makes the list loose:
+.
+Term 1
+: foo
+
+Term 2
+
+: bar
+.
+<dl>
+<dt>Term 1</dt>
+<dd>
+<p>foo</p>
+</dd>
+<dt>Term 2</dt>
+<dd>
+<p>bar</p>
+</dd>
+</dl>
+.
+
+
 Regression test (first paragraphs shouldn't be tight):
 .
 Term 1

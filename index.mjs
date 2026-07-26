@@ -49,8 +49,11 @@ export default function deflist_plugin (md) {
     let nextLine = startLine + 1
     if (nextLine >= endLine) { return false }
 
+    let tight = true
+
     if (state.isEmpty(nextLine)) {
       nextLine++
+      tight = false
       if (nextLine >= endLine) { return false }
     }
 
@@ -60,7 +63,6 @@ export default function deflist_plugin (md) {
 
     // Start list
     const listTokIdx = state.tokens.length
-    let tight = true
 
     const token_dl_o = state.push('dl_open', 'dl', 1)
     const listLines = [startLine, 0]
@@ -174,12 +176,14 @@ export default function deflist_plugin (md) {
 
       ddLine = dtLine + 1
       if (ddLine >= endLine) { break }
-      if (state.isEmpty(ddLine)) { ddLine++ }
+      const skippedEmptyLine = state.isEmpty(ddLine)
+      if (skippedEmptyLine) { ddLine++ }
       if (ddLine >= endLine) { break }
 
       if (state.sCount[ddLine] < state.blkIndent) { break }
       contentStart = skipMarker(state, ddLine)
       if (contentStart < 0) { break }
+      if (skippedEmptyLine) { tight = false }
 
       // go to the next loop iteration:
       // insert DT and DD tags and repeat checking
