@@ -18,11 +18,8 @@ export default function deflist_plugin (md) {
 
     const pos = state.skipSpaces(start)
 
-    // require space after ":"
-    if (start === pos) { return -1 }
-
-    // no empty definitions, e.g. "  : "
-    if (pos >= max) { return -1 }
+    // require space after marker if there is inline content
+    if (start < max && start === pos) { return -1 }
 
     return start
   }

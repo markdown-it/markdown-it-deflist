@@ -88,19 +88,44 @@ Term 2
 </dl>
 .
 
-There should be something after a colon by the way:
+Empty definitions:
 
 .
-Non-term 1
+Term 1
   :
 
-Non-term 2
+Term 2
   :   
 .
-<p>Non-term 1
-:</p>
-<p>Non-term 2
-:</p>
+<dl>
+<dt>Term 1</dt>
+<dd></dd>
+<dt>Term 2</dt>
+<dd></dd>
+</dl>
+.
+
+
+Definition content may start on the next line:
+.
+Term
+:
+  Definition
+.
+<dl>
+<dt>Term</dt>
+<dd>Definition</dd>
+</dl>
+.
+
+
+Inline definition content requires a space after the marker:
+.
+Term
+:definition
+.
+<p>Term
+:definition</p>
 .
 
 
