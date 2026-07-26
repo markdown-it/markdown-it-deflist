@@ -1,13 +1,12 @@
 import { fileURLToPath } from 'node:url'
+import { describe } from 'node:test'
 import markdownit from 'markdown-it'
-import generate from 'markdown-it-testgen'
+import { generateTests } from './helpers.mjs'
 
 import deflist from '../index.mjs'
-
-/* eslint-env mocha */
 
 describe('markdown-it-deflist', function () {
   const md = markdownit().use(deflist)
 
-  generate(fileURLToPath(new URL('fixtures/deflist.txt', import.meta.url)), md)
+  generateTests(fileURLToPath(new URL('fixtures/deflist.txt', import.meta.url)), md)
 })
