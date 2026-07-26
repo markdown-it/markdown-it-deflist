@@ -210,6 +210,22 @@ Definition lists should be second last in the queue. Exemplī grātiā, this isn
 <p>: just a paragraph with a colon</p>
 .
 
+Definition markers may be indented up to three spaces:
+.
+Term 1
+   : definition
+
+Term 2
+    : not a definition
+.
+<dl>
+<dt>Term 1</dt>
+<dd>definition</dd>
+</dl>
+<p>Term 2
+: not a definition</p>
+.
+
 Nested definition lists:
 
 .
