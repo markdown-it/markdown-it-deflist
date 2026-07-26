@@ -88,8 +88,8 @@ export default function deflist_plugin (md) {
       token_dt_o.map = [dtLine, dtLine]
 
       const token_i = state.push('inline', '', 0)
-      token_i.map      = [dtLine, dtLine]
-      token_i.content  = state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim()
+      token_i.map = [dtLine, dtLine]
+      token_i.content = state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim()
       token_i.children = []
 
       state.push('dt_close', 'dt', -1)
