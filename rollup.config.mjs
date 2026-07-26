@@ -1,6 +1,4 @@
-import resolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
-import { babel } from '@rollup/plugin-babel'
 import { readFileSync } from 'fs'
 
 const pkg = JSON.parse(readFileSync(new URL('package.json', import.meta.url)))
@@ -41,8 +39,6 @@ const config_umd_full = {
     }
   ],
   plugins: [
-    resolve(),
-    babel({ babelHelpers: 'bundled' }),
     {
       banner () {
         return `/*! ${pkg.name} ${pkg.version} https://github.com/${pkg.repository} @license ${pkg.license} */`
@@ -57,11 +53,7 @@ const config_cjs_no_deps = {
     file: 'dist/index.cjs.js',
     format: 'cjs'
   },
-  external: Object.keys(pkg.dependencies || {}),
-  plugins: [
-    resolve(),
-    babel({ babelHelpers: 'bundled' })
-  ]
+  external: Object.keys(pkg.dependencies || {})
 }
 
 let config = [
