@@ -1,5 +1,7 @@
 // Process definition lists
 //
+const ddDepthKey = Symbol('markdown-it-deflist.ddDepth')
+
 export default function deflist_plugin (md) {
   const isSpace = md.utils.isSpace
 
@@ -42,7 +44,7 @@ export default function deflist_plugin (md) {
   function deflist (state, startLine, endLine, silent) {
     if (silent) {
       // quirk: validation mode validates a dd block only, not a whole deflist
-      if (state.ddIndent < 0) { return false }
+      if (!state.env[ddDepthKey]) { return false }
       const markerPos = skipMarker(state, startLine)
       return markerPos >= 0 && state.sCount[startLine] < state.blkIndent
     }
@@ -121,18 +123,19 @@ export default function deflist_plugin (md) {
         contentStart = pos
 
         const oldTight = state.tight
-        const oldDDIndent = state.ddIndent
         const oldIndent = state.blkIndent
         const oldTShift = state.tShift[ddLine]
         const oldSCount = state.sCount[ddLine]
         const oldParentType = state.parentType
-        state.blkIndent = state.ddIndent = state.sCount[ddLine] + 2
+        state.blkIndent = state.sCount[ddLine] + 2
         state.tShift[ddLine] = contentStart - state.bMarks[ddLine]
         state.sCount[ddLine] = offset
         state.tight = true
         state.parentType = 'deflist'
 
+        state.env[ddDepthKey] = (state.env[ddDepthKey] || 0) + 1
         state.md.block.tokenize(state, ddLine, endLine, true)
+        state.env[ddDepthKey]--
 
         if (termIsTight) {
           markTightParagraph(state, itemTokIdx, state.tokens.length, token_dd_o.level + 1)
@@ -143,7 +146,6 @@ export default function deflist_plugin (md) {
         state.tight = oldTight
         state.parentType = oldParentType
         state.blkIndent = oldIndent
-        state.ddIndent = oldDDIndent
 
         state.push('dd_close', 'dd', -1)
 
