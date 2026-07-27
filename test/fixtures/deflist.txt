@@ -219,6 +219,30 @@ Term 2
 </dl>
 .
 
+
+Known difference from Pandoc commonmark_x: multiple blank lines break a definition list:
+.
+Term
+
+
+: definition
+.
+<p>Term</p>
+<p>: definition</p>
+.
+
+
+Known difference from Pandoc commonmark_x: terms must fit on one line:
+.
+First line
+second line
+: definition
+.
+<p>First line
+second line
+: definition</p>
+.
+
 Definition lists should be second last in the queue. Exemplī grātiā, this isn't a valid one:
 
 .
