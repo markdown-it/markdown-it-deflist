@@ -243,6 +243,21 @@ second line
 : definition</p>
 .
 
+
+A trailing term without a definition is not part of the list:
+.
+Term 1
+: definition
+
+Term 2
+.
+<dl>
+<dt>Term 1</dt>
+<dd>definition</dd>
+</dl>
+<p>Term 2</p>
+.
+
 Definition lists should be second last in the queue. Exemplī grātiā, this isn't a valid one:
 
 .

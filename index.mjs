@@ -161,6 +161,8 @@ export default function deflist_plugin (md) {
         // insert DD tag and repeat checking
       }
 
+      // EOF, empty and outdented lines have already exited through OUTER above.
+      // Keep these checks as guards for non-standard block parser states.
       if (nextLine >= endLine) { break }
       dtLine = nextLine
 
@@ -171,8 +173,10 @@ export default function deflist_plugin (md) {
       if (ddLine >= endLine) { break }
       const skippedEmptyLine = state.isEmpty(ddLine)
       if (skippedEmptyLine) { ddLine++ }
+      // A trailing blank reaches EOF here, with the same result as above.
       if (ddLine >= endLine) { break }
 
+      // Nested block tokenizers normally stop before an outdented line.
       if (state.sCount[ddLine] < state.blkIndent) { break }
       contentStart = skipMarker(state, ddLine)
       if (contentStart < 0) { break }
