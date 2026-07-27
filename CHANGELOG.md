@@ -1,3 +1,14 @@
+4.0.0 / 2026-07-27
+------------------
+
+- Move definition nesting tracking from `StateBlock` to `env`.
+- Improve compatibility with Pandoc:
+  - Apply compactness separately to each definition term.
+  - Allow empty definitions and definition content starting on the next line.
+  - Limit definition marker indentation to 3 spaces.
+- Document known differences from Pandoc.
+
+
 3.0.1 / 2026-05-24
 ------------------
 
