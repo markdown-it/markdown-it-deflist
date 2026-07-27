@@ -8,7 +8,10 @@
     "markdown",
     "definition list"
   ],
-  "repository": "markdown-it/markdown-it-deflist.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markdown-it/markdown-it-deflist.git"
+  },
   "license": "MIT",
   "funding": [
     {
