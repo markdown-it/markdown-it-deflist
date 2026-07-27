@@ -6,7 +6,7 @@
 
 > Definition list (`<dl>`) tag plugin for [markdown-it](https://github.com/markdown-it/markdown-it) markdown parser.
 
-Syntax is based on [pandoc definition lists](https://pandoc.org/MANUAL.html#definition-lists).
+Syntax is largely compatible with [Pandoc definition lists](https://pandoc.org/MANUAL.html#definition-lists).
 
 
 ## Install
@@ -22,6 +22,47 @@ var md = require('markdown-it')()
             .use(require('markdown-it-deflist'));
 
 md.render(/*...*/);
+```
+
+## Known differences
+
+Pandoc removes paragraph wrappers from compact definitions even when a
+definition contains multiple block elements. This plugin preserves the `<p>`
+tags in that case, so block boundaries are not lost.
+
+```md
+Term
+: First paragraph.
+
+  - list item
+```
+
+Pandoc renders:
+
+```html
+<dl>
+<dt>Term</dt>
+<dd>
+First paragraph.
+<ul>
+<li>list item</li>
+</ul>
+</dd>
+</dl>
+```
+
+This plugin renders:
+
+```html
+<dl>
+<dt>Term</dt>
+<dd>
+<p>First paragraph.</p>
+<ul>
+<li>list item</li>
+</ul>
+</dd>
+</dl>
 ```
 
 _Differences in browser._ If you load script directly into the page, without

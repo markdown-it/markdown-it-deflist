@@ -129,7 +129,7 @@ Term
 .
 
 
-List is tight iff all dts are tight:
+Blank lines between definitions do not make terms loose:
 .
 Term 1
 : foo
@@ -142,24 +142,16 @@ Term 2
 .
 <dl>
 <dt>Term 1</dt>
-<dd>
-<p>foo</p>
-</dd>
-<dd>
-<p>bar</p>
-</dd>
+<dd>foo</dd>
+<dd>bar</dd>
 <dt>Term 2</dt>
-<dd>
-<p>foo</p>
-</dd>
-<dd>
-<p>bar</p>
-</dd>
+<dd>foo</dd>
+<dd>bar</dd>
 </dl>
 .
 
 
-Blank line after the first term makes the list loose:
+Blank line after the first term makes its definitions loose:
 .
 Term 1
 
@@ -174,14 +166,12 @@ Term 2
 <p>foo</p>
 </dd>
 <dt>Term 2</dt>
-<dd>
-<p>bar</p>
-</dd>
+<dd>bar</dd>
 </dl>
 .
 
 
-Blank line after a later term makes the list loose:
+Blank line after a later term makes its definitions loose:
 .
 Term 1
 : foo
@@ -192,9 +182,7 @@ Term 2
 .
 <dl>
 <dt>Term 1</dt>
-<dd>
-<p>foo</p>
-</dd>
+<dd>foo</dd>
 <dt>Term 2</dt>
 <dd>
 <p>bar</p>
@@ -203,24 +191,30 @@ Term 2
 .
 
 
-Regression test (first paragraphs shouldn't be tight):
+Known difference from Pandoc: paragraphs are preserved in multi-block definitions:
 .
 Term 1
-: foo
+: First paragraph.
 
-  bar
+  Second paragraph.
+
 Term 2
-: foo
+: Paragraph before a list.
+
+  - list item
 .
 <dl>
 <dt>Term 1</dt>
 <dd>
-<p>foo</p>
-<p>bar
-Term 2</p>
+<p>First paragraph.</p>
+<p>Second paragraph.</p>
 </dd>
+<dt>Term 2</dt>
 <dd>
-<p>foo</p>
+<p>Paragraph before a list.</p>
+<ul>
+<li>list item</li>
+</ul>
 </dd>
 </dl>
 .

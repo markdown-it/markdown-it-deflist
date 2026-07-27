@@ -24,16 +24,19 @@ export default function deflist_plugin (md) {
     return start
   }
 
-  function markTightParagraphs (state, idx) {
-    const level = state.level + 2
+  function markTightParagraph (state, start, end, level) {
+    let block = -1
 
-    for (let i = idx + 2, l = state.tokens.length - 2; i < l; i++) {
-      if (state.tokens[i].level === level && state.tokens[i].type === 'paragraph_open') {
-        state.tokens[i + 2].hidden = true
-        state.tokens[i].hidden = true
-        i += 2
-      }
+    for (let i = start; i < end; i++) {
+      const token = state.tokens[i]
+      if (token.level !== level || !token.block || token.nesting < 0) { continue }
+      if (block >= 0) { return }
+      block = i
     }
+
+    if (block < 0 || state.tokens[block].type !== 'paragraph_open') { return }
+    state.tokens[block + 2].hidden = true
+    state.tokens[block].hidden = true
   }
 
   function deflist (state, startLine, endLine, silent) {
@@ -47,20 +50,17 @@ export default function deflist_plugin (md) {
     let nextLine = startLine + 1
     if (nextLine >= endLine) { return false }
 
-    let tight = true
+    let termIsTight = true
 
     if (state.isEmpty(nextLine)) {
       nextLine++
-      tight = false
+      termIsTight = false
       if (nextLine >= endLine) { return false }
     }
 
     if (state.sCount[nextLine] < state.blkIndent) { return false }
     let contentStart = skipMarker(state, nextLine)
     if (contentStart < 0) { return false }
-
-    // Start list
-    const listTokIdx = state.tokens.length
 
     const token_dl_o = state.push('dl_open', 'dl', 1)
     const listLines = [startLine, 0]
@@ -82,8 +82,6 @@ export default function deflist_plugin (md) {
     /* eslint no-labels:0,block-scoped-var:0 */
     OUTER:
     for (;;) {
-      let prevEmptyEnd = false
-
       const token_dt_o = state.push('dt_open', 'dt', 1)
       token_dt_o.map = [dtLine, dtLine]
 
@@ -95,6 +93,7 @@ export default function deflist_plugin (md) {
       state.push('dt_close', 'dt', -1)
 
       for (;;) {
+        const itemTokIdx = state.tokens.length
         const token_dd_o = state.push('dd_open', 'dd', 1)
         const itemLines = [nextLine, 0]
         token_dd_o.map = itemLines
@@ -135,13 +134,9 @@ export default function deflist_plugin (md) {
 
         state.md.block.tokenize(state, ddLine, endLine, true)
 
-        // If any of list item is tight, mark list as tight
-        if (!state.tight || prevEmptyEnd) {
-          tight = false
+        if (termIsTight) {
+          markTightParagraph(state, itemTokIdx, state.tokens.length, token_dd_o.level + 1)
         }
-        // Item become loose if finish with empty line,
-        // but we should filter last element, because it means list finish
-        prevEmptyEnd = (state.line - ddLine) > 1 && state.isEmpty(state.line - 1)
 
         state.tShift[ddLine] = oldTShift
         state.sCount[ddLine] = oldSCount
@@ -181,7 +176,7 @@ export default function deflist_plugin (md) {
       if (state.sCount[ddLine] < state.blkIndent) { break }
       contentStart = skipMarker(state, ddLine)
       if (contentStart < 0) { break }
-      if (skippedEmptyLine) { tight = false }
+      termIsTight = !skippedEmptyLine
 
       // go to the next loop iteration:
       // insert DT and DD tags and repeat checking
@@ -193,11 +188,6 @@ export default function deflist_plugin (md) {
     listLines[1] = nextLine
 
     state.line = nextLine
-
-    // mark paragraphs tight if needed
-    if (tight) {
-      markTightParagraphs(state, listTokIdx)
-    }
 
     return true
   }
