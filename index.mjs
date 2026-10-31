@@ -85,10 +85,10 @@ export default function deflist_plugin (md) {
     OUTER:
     for (;;) {
       const token_dt_o = state.push('dt_open', 'dt', 1)
-      token_dt_o.map = [dtLine, dtLine]
+      token_dt_o.map = [dtLine, dtLine + 1]
 
       const token_i = state.push('inline', '', 0)
-      token_i.map = [dtLine, dtLine]
+      token_i.map = [dtLine, dtLine + 1]
       token_i.content = state.getLines(dtLine, dtLine + 1, state.blkIndent, false).trim()
       token_i.children = []
 
